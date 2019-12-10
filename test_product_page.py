@@ -4,6 +4,19 @@ import pytest
 product_base_link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
 urls = [f"{product_base_link}/?promo=offer{no}" for no in range(10)]
 
+@pytest.mark.skip
+def test_guest_should_see_login_link_on_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.should_be_login_link()
+
+def test_guest_can_go_to_login_page_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)  # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес
+    page.open()  # открываем страницу
+    page.go_to_login_page()  # выполняем метод страницы - переходим на страницу логина
+
 @pytest.mark.parametrize('link', urls)
 @pytest.mark.skip
 def test_guest_can_add_product_to_basket(browser, link):
@@ -32,6 +45,7 @@ def test_guest_cant_see_success_message(browser,link):
     product_page.should_not_be_success_message()
 
 @pytest.mark.parametrize('link', urls)
+@pytest.mark.skip
 def test_message_disappeared_after_adding_product_to_basket(browser,link):
     #link2 = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7"
     page = ProductPage(browser, link)  # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес
