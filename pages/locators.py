@@ -19,3 +19,4 @@ class ProductPageLocators():
     PRICE = (By.CSS_SELECTOR, ".col-sm-6.product_main > p")
     ADDED_PRODUCT = (By.XPATH, "//div[@id='messages']/div[1]/div/strong")
     ADDED_PRICE = (By.XPATH, "//div[@id='messages']/div[3]/div/p/strong")
+    SUCCESS_MESSAGE = (By.XPATH, "//div[@id='messages']/div[1]/div/strong")

@@ -1,28 +1,52 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
 import time
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoAlertPresentException # в начале файла
 
-
-#класс для страницы продуктв, наследуем класс от  BasePage
+#класс для страницы продукта, наследуем класс от  BasePage
 class ProductPage(BasePage):
 
     def should_be_product_page(self):
         self.should_be_product_add_basket()
 
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_not_be_success_message_after_add_basket(self):
+        add_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
+        add_basket.click()
+        self.browser.implicitly_wait(5)
+        self.solve_quiz_and_get_code()
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+        time.sleep(2)
+
+    def not_should_to_be_disappeared__after_add_basket(self):
+        add_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
+        add_basket.click()
+        self.browser.implicitly_wait(5)
+        self.solve_quiz_and_get_code()
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+        time.sleep(2)
+
     def should_be_product_add_basket(self):
-        assert self.is_element_present(*ProductPageLocators.ADD_TO_BASKET), "Add Basket button not find"
-        assert self.is_element_present(*ProductPageLocators.PRODUCT), "Product not find"
-        assert self.is_element_present(*ProductPageLocators.PRICE), "Price not find"
+        assert self.is_element_present(*ProductPageLocators.ADD_TO_BASKET), \
+            "Add Basket button not find"
+        assert self.is_element_present(*ProductPageLocators.PRODUCT), \
+            "Product not find"
+        assert self.is_element_present(*ProductPageLocators.PRICE), \
+            "Price not find"
         add_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         add_basket.click()
         self.browser.implicitly_wait(5)
         self.solve_quiz_and_get_code()
 
         self.browser.implicitly_wait(5)
-        assert self.is_element_present(*ProductPageLocators.ADDED_PRODUCT), "Added product not find"
-        assert self.is_element_present(*ProductPageLocators.ADDED_PRICE), "Added price not find"
+        assert self.is_element_present(*ProductPageLocators.ADDED_PRODUCT), \
+            "Added product not find"
+        assert self.is_element_present(*ProductPageLocators.ADDED_PRICE), \
+            "Added price not find"
         self.browser.implicitly_wait(5)
 
         product = self.browser.find_element(*ProductPageLocators.PRODUCT)
