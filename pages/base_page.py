@@ -28,6 +28,10 @@ class BasePage():
         link.click()
         time.sleep(2)
 
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
@@ -35,7 +39,7 @@ class BasePage():
         try:                                  #в него будем передавать два аргумента: как (how) искать (css, id, xpath и тд) и что(what) искать (строку-селектор).
             self.browser.find_element(how, what)
         except (NoSuchElementException):
-            return
+            return False
 
         return True
 
